@@ -67,7 +67,7 @@ public class SingleStockTrader {
 		if (atStepZero) {
 			order = learner.act(state);
 		} else {
-			order = learner.learnAndAct(reward, state);
+			order = learner.learnThenAct(reward, state);
 		}
 		int maxHolding = exchange.getMaxHolding();
 		if ((holding + order) > maxHolding) {

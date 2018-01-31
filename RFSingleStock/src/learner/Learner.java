@@ -14,7 +14,7 @@ public abstract class Learner {
 		return 0;
 	}
 
-	public int learnAndAct(double reward, SingleStockState state) {
+	public int learnThenAct(double reward, SingleStockState state) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
