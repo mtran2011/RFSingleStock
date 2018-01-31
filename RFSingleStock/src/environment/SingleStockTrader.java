@@ -14,6 +14,7 @@ public class SingleStockTrader {
 	private double lastSeenPrice;
 	private double wealth;
 	private int stepCount;
+	private boolean atStepZero; // true if standing at beginning of an episode
 	
 	private double reward;
 	private SingleStockState state;
@@ -36,15 +37,46 @@ public class SingleStockTrader {
 		if (stepCount == -1) {
 			// at initialization
 			lastSeenPrice = price;
+			atStepZero = true;
 			stepCount += 1;
 			state = new SingleStockState(holding, lastSeenPrice);
 			return;
 		}
-		
-		
+		double pnl = holding * (price - lastSeenPrice);
+		lastSeenPrice = price;
+		double deltaWealth = pnl - lastTransactionCost;
+		wealth += deltaWealth;
+		stepCount += 1;
+		reward = deltaWealth - 0.5 * utility * Math.pow(deltaWealth - wealth / stepCount, 2);
+		state = new SingleStockState(holding, lastSeenPrice);
 	}
+	
 	public void resetEpisode() {
-		// TODO Auto-generated method stub
+		holding = 0;
+		wealth = 0;
+		stepCount = -1;
+		exchange.registerTrader(this);
 		
+		lastTransactionCost = 0;
+		reward = 0;
+		learner.resetEpisode();
+	}
+	
+	public void placeOrder() {
+		int order;
+		if (atStepZero) {
+			order = learner.act(state);
+		} else {
+			order = learner.learnAndAct(reward, state);
+		}
+		int maxHolding = exchange.getMaxHolding();
+		if ((holding + order) > maxHolding) {
+			order = maxHolding - holding;
+		}
+		if ((holding + order) < -maxHolding) {
+			order = -maxHolding - holding;
+		}
+		lastTransactionCost = exchange.execute(order);
+		holding += order;
 	}
 }
