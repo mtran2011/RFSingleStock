@@ -79,4 +79,12 @@ public class SingleStockTrader {
 		lastTransactionCost = exchange.execute(order);
 		holding += order;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public double getWealth() {
+		return wealth;
+	}
 }

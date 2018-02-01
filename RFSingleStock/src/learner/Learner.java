@@ -2,21 +2,14 @@ package learner;
 
 import common.SingleStockState;
 
-public abstract class Learner {
+public interface Learner {
 
-	public void resetEpisode() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void resetEpisode();
+	
+	// return an int as the action in a given state
+	public int act(SingleStockState state);
 
-	public int act(SingleStockState state) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public int learnThenAct(double reward, SingleStockState state) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	// first use the reward and state to learn internally, then return an action
+	public int learnThenAct(double reward, SingleStockState state);
 
 }
