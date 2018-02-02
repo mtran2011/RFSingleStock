@@ -19,11 +19,11 @@ public abstract class MatrixLearner implements Learner {
 	protected boolean atStepZero; // true if standing at beginning of an episode
 	
 	private final double minEpsilon = 0.001;
-	private int count;
 	private final int targetCount; // when minEpsilon kicks in
 	private final int targetCountSplit = 4; // epsilon is flat for the first 1/4 of target count, then linear decay to min
 	private final double initEpsilon; 
 	private final double slope; // the slope of epsilon linear decay
+	protected int count;
 	
 	protected Map<StateActionPair, Double> Qmap; // map a pair of (s,a) to Q(s,a)
 	
@@ -46,7 +46,7 @@ public abstract class MatrixLearner implements Learner {
 		return null;
 	}
 	
-	private void updateEpsilon() {
+	protected void updateEpsilon() {
 		if (count < targetCount / targetCountSplit) {
 			epsilon = initEpsilon;
 		} else if (count > targetCount) {
@@ -60,9 +60,10 @@ public abstract class MatrixLearner implements Learner {
 	
 	protected Map<Integer, Double> findEpsilonGreedyAction(SingleStockState state, boolean useEpsilon) {
 		// return a map of the action (an int) to its Q(state,action) value
+		assert actions.size() > 0;
 		Integer bestAction = null;
 		Double bestQ = null;
-		if (useEpsilon == true && random.nextDouble() < epsilon) {
+		if (useEpsilon && random.nextDouble() < epsilon) {
 			bestAction = getRandomAction();
 			bestQ = getQ(new StateActionPair(state, bestAction));
 		} else {

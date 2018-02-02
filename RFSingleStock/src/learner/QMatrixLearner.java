@@ -18,7 +18,7 @@ public abstract class QMatrixLearner extends MatrixLearner {
 		// find the action with the max Q without using epsilon
 		Map<Integer, Double> maxActionAndQ = findEpsilonGreedyAction(state, false);
 		double maxQ = maxActionAndQ.values().iterator().next();
-		Double newQ = oldQ + learningRate * (reward + discount * maxQ - oldQ);
+		double newQ = oldQ + learningRate * (reward + discount * maxQ - oldQ);
 		Qmap.put(lastStateAction, newQ);
 	}
 	
