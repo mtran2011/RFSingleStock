@@ -75,7 +75,6 @@ public class SingleStockMain {
 	}
 	
 	public static Map<String, Double> runOneCompleteTrial(int iteration) {
-		// TODO
 		double currentprice = 75, minprice = 0.1, maxprice = 150;
 		double kappa = Math.log(2)/3, mu = Math.log(50), sigma = 0.1; // reversion level is 50
 		Stock stock = new OULogStock(currentprice, minprice, maxprice, kappa, mu, sigma);
