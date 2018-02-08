@@ -44,6 +44,10 @@ public class SingleStockExchange {
 		return config.getMaxholding();
 	}
 	
+	public Set<SingleStockTrader> getTraders() {
+		return traders;
+	}
+
 	public double execute(int quantity) {
 		double numLots = Math.abs(quantity) * 1.0 / config.getLotsize();
 		double spreadCost = numLots * config.getTick();

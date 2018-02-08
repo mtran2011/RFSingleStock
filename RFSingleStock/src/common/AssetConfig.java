@@ -29,12 +29,6 @@ public class AssetConfig {
 		this.lotsize = lotsize;
 		this.rounding = rounding;
 		this.maxholding = maxholding;
-		if (rounding == 0) {
-			tick = 1;
-		} else if (rounding == 1) {
-			tick = 0.1;
-		} else {
-			tick = 0.2;
-		}
+		tick = Math.pow(10, -rounding);
 	}	
 }
