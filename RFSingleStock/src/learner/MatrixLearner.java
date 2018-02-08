@@ -78,6 +78,7 @@ public abstract class MatrixLearner implements Learner {
 						bestAction = action;
 					} else if (newQ.compareTo(bestQ) == 0) {
 						// randomly choose either the existing bestAction or the new found action
+						// TODO insert a true method for randomizing action
 						if (random.nextFloat() <  0.5) {
 							bestAction = action;
 						}

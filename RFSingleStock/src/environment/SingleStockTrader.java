@@ -10,8 +10,8 @@ public class SingleStockTrader {
 	private SingleStockExchange exchange;
 	
 	private int holding;
-	private double lastTransactionCost;
 	private double lastSeenPrice;
+	private double lastTransactionCost;
 	private double wealth;
 	private int stepCount;
 	private boolean atStepZero; // true if standing at beginning of an episode
@@ -25,12 +25,7 @@ public class SingleStockTrader {
 		this.utility = utility;
 		this.learner = learner;
 		this.exchange = exchange;
-		
-		this.holding = 0;
-		this.wealth = 0;
-		this.stepCount = -1;
-		
-		this.exchange.registerTrader(this);
+		resetEpisode();
 	}
 	
 	public void getNotified(double price) {
@@ -53,7 +48,7 @@ public class SingleStockTrader {
 	
 	public void resetEpisode() {
 		holding = 0;
-		wealth = 0;
+		wealth = 100; // some nominal amount
 		stepCount = -1;
 		exchange.registerTrader(this);
 		
