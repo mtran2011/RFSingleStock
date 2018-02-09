@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.netlib.util.doubleW;
-
 import common.AssetConfig;
 import learner.Learner;
 import learner.RFSarsaMatrixLearner;

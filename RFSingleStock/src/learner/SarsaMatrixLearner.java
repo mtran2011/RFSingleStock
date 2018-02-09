@@ -2,8 +2,6 @@ package learner;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CountDownLatch;
-
 import common.SingleStockState;
 import common.StateActionPair;
 
