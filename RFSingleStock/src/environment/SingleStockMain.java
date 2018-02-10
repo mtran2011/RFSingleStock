@@ -19,7 +19,7 @@ public class SingleStockMain {
 	
 	private static final String rfsarsa = "RF Sarsa", tabularq = "Tabular Q", tabularsarsa = "Tabular Sarsa";
 	private static final String[] traderNames = {rfsarsa, tabularq, tabularsarsa};
-	private static final int ntrain = 100, ntest = 100, ntrials = 5;
+	private static final int ntrain = 150, ntest = 100, ntrials = 5;
 	
 	public static Map<String, Double> trainAndTest(SingleStockExchange exchange, int ntrain, int ntest) {
 		// run training, then run testing, then return a map of trader's name to its Sharpe ratio during ntest

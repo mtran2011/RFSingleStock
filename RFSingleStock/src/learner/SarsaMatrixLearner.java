@@ -13,7 +13,6 @@ public abstract class SarsaMatrixLearner extends MatrixLearner {
 	}
 
 	private void trainInternally(double reward, double nextQ) {
-		assert !atStepZero && lastStateAction != null;
 		double oldQ = getQ(lastStateAction);
 		double newQ = oldQ + learningRate * (reward + discount * nextQ - oldQ);
 		Qmap.put(lastStateAction, newQ);
@@ -25,7 +24,7 @@ public abstract class SarsaMatrixLearner extends MatrixLearner {
 		int action = res.keySet().iterator().next();
 		double nextQ = res.values().iterator().next();
 		
-		if (!atStepZero && lastStateAction != null) {
+		if (lastStateAction != null) {
 			trainInternally(reward, nextQ);
 		}
 		

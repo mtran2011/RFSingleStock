@@ -16,14 +16,13 @@ public abstract class MatrixLearner implements Learner {
 	private double epsilon;
 	
 	protected StateActionPair lastStateAction;
-	protected boolean atStepZero; // true if standing at beginning of an episode
 	
 	private final double minEpsilon = 0.001;
 	private final int targetCount; // when minEpsilon kicks in
 	private final int targetCountSplit = 4; // epsilon is flat for the first 1/4 of target count, then linear decay to min
 	private final double initEpsilon; 
 	private final double slope; // the slope of epsilon linear decay
-	protected int count;
+	protected int count; // number of steps completed
 	
 	protected Map<StateActionPair, Double> Qmap; // map a pair of (s,a) to Q(s,a)
 	
@@ -112,13 +111,11 @@ public abstract class MatrixLearner implements Learner {
 		Qmap = new HashMap<StateActionPair, Double>();
 		random = new Random();
 		
-		atStepZero = true;
 		lastStateAction = null;
 	}
 	
 	@Override
 	public void resetEpisode() {
-		atStepZero = true;
 		lastStateAction = null;
 	}
 	

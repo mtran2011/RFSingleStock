@@ -14,7 +14,6 @@ public class SingleStockTrader {
 	private double lastTransactionCost;
 	private double wealth;
 	private int stepCount;
-	private boolean atStepZero; // true if standing at beginning of an episode
 	
 	private double reward;
 	private SingleStockState state;
@@ -32,7 +31,6 @@ public class SingleStockTrader {
 		if (stepCount == -1) {
 			// at initialization
 			lastSeenPrice = price;
-			atStepZero = true;
 			stepCount += 1;
 			state = new SingleStockState(holding, lastSeenPrice);
 			return;
@@ -48,8 +46,8 @@ public class SingleStockTrader {
 	
 	public void resetEpisode() {
 		holding = 0;
-		wealth = 100; // some nominal amount
-		stepCount = -1;
+		wealth = 100; // start with some nominal positive amount
+		stepCount = -1; // 
 		exchange.registerTrader(this);
 		
 		lastTransactionCost = 0;
@@ -59,7 +57,7 @@ public class SingleStockTrader {
 	
 	public void placeOrder() {
 		int order;
-		if (atStepZero) {
+		if (stepCount < 1) {
 			order = learner.act(state);
 		} else {
 			order = learner.learnThenAct(reward, state);

@@ -13,7 +13,6 @@ public abstract class QMatrixLearner extends MatrixLearner {
 	}
 
 	private void trainInternally(double reward, SingleStockState state) {
-		assert !atStepZero && lastStateAction != null;
 		double oldQ = getQ(lastStateAction);
 		// find the action with the max Q without using epsilon
 		Map<Integer, Double> maxActionAndQ = findEpsilonGreedyAction(state, false);
@@ -24,7 +23,7 @@ public abstract class QMatrixLearner extends MatrixLearner {
 	
 	@Override
 	public int learnThenAct(double reward, SingleStockState state) {
-		if (atStepZero) {
+		if (lastStateAction == null) {
 			return act(state);
 		}
 		trainInternally(reward, state);
