@@ -12,7 +12,7 @@ public class TabularQLearner extends QMatrixLearner {
 	}
 
 	@Override
-	protected double getQ(StateActionPair sa) {
+	protected Double getQ(StateActionPair sa) {
 		return Qmap.getOrDefault(sa, 0.0);
 	}
 

@@ -20,9 +20,9 @@ public class RFSarsaMatrixLearner extends SarsaMatrixLearner {
 	}
 
 	@Override
-	protected double getQ(StateActionPair sa) {
+	protected Double getQ(StateActionPair sa) {
 		if (count < stepMultiple) {
-			return 0;
+			return 0.0;
 		}
 		if (count % stepMultiple == 0) {
 			// prepare training data
