@@ -61,15 +61,17 @@ public abstract class MatrixLearner implements Learner {
 		// return a map of the action (an int) to its Q(state,action) value
 		assert actions.size() > 0;
 		Integer bestAction = null;
-		Double bestQ = null;
+		double bestQ;
 		if (useEpsilon && random.nextDouble() < epsilon) {
 			bestAction = getRandomAction();
 			bestQ = getQ(new StateActionPair(state, bestAction));
 		} else {
+			double countMaxQ = 1;
 			for (Integer action: actions) {
-				if (bestQ == null) {
+				if (bestAction == null) {
 					bestQ = getQ(new StateActionPair(state, action));
 					bestAction = action;
+					countMaxQ++;
 				} else {
 					Double newQ = getQ(new StateActionPair(state, action));
 					if (newQ.compareTo(bestQ) > 0) {

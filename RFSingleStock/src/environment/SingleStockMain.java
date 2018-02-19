@@ -19,7 +19,7 @@ public class SingleStockMain {
 	
 	private static final String rfsarsa = "RF Sarsa", tabularq = "Tabular Q", tabularsarsa = "Tabular Sarsa";
 	private static final String[] traderNames = {rfsarsa, tabularq, tabularsarsa};
-	private static final int ntrain = 150, ntest = 100, ntrials = 5;
+	private static final int ntrain = 100000, ntest = 10000, ntrials = 10;
 	
 	public static Map<String, Double> trainAndTest(SingleStockExchange exchange, int ntrain, int ntest) {
 		// run training, then run testing, then return a map of trader's name to its Sharpe ratio during ntest
@@ -79,12 +79,13 @@ public class SingleStockMain {
 	}
 	
 	public static Map<String, Double> runOneCompleteTrial() {
-		double currentprice = 75, minprice = 0.1, maxprice = 150;
-		double kappa = Math.log(2)/3, mu = Math.log(50), sigma = 0.1; // reversion level is 50
+		double currentprice = 100, minprice = 0.1, maxprice = 300;
+		double kappa = 0.1, mu = Math.log(150), sigma = 0.1; // reversion level is 50
 		Stock stock = new OULogStock(currentprice, minprice, maxprice, kappa, mu, sigma);
 		// rounding to 2 decimals so each tick is 1 cent, max holding is 100 lots
-		int lotsize = 100, rounding = 2;
+		int lotsize = 100, rounding = 1;
 		AssetConfig config = new AssetConfig(lotsize, rounding, 100*lotsize);
+		
 		SingleStockExchange exchange = new SingleStockExchange(stock, config);
 		
 		Set<Integer> actions = new HashSet<Integer>();
@@ -93,13 +94,13 @@ public class SingleStockMain {
 		}
 		
 		double initEpsilon = 0.15, learningRate = 0.5, discount = 0.999;
-		int targetCount = 6000; // when minimum epsilon of 0.001 kicks in
+		int targetCount = ntrain; // when minimum epsilon of 0.001 kicks in
 		Learner rfSarsa = new RFSarsaMatrixLearner(actions, initEpsilon, targetCount, learningRate, discount);
 		Learner tabularQ = new TabularQLearner(actions, initEpsilon, targetCount, learningRate, discount);
 		Learner tabularSarsa = new TabularSarsa(actions, initEpsilon, targetCount, learningRate, discount);
 		
 		double utility = 0.001;
-		SingleStockTrader rfSarsaTrader = new SingleStockTrader(rfsarsa, utility, rfSarsa, exchange);
+		// SingleStockTrader rfSarsaTrader = new SingleStockTrader(rfsarsa, utility, rfSarsa, exchange);
 		SingleStockTrader tabularQTrader = new SingleStockTrader(tabularq, utility, tabularQ, exchange);
 		SingleStockTrader tabularSarsaTrader = new SingleStockTrader(tabularsarsa, utility, tabularSarsa, exchange);
 		
@@ -107,7 +108,7 @@ public class SingleStockMain {
 	}
 
 	public static void writeCsv(Map<String, double[]> sharpeRatios) {
-		String filename = "C:\\Users\\tranh\\Documents\\" + ntrain + "train" + ntest + "test";
+		String filename = "C:\\Users\\tranh\\Documents\\" + ntrain + "train" + ntest + "test.csv";
 		String delimiter = ",";
 		
 		FileWriter fileWriter = null;
@@ -145,6 +146,8 @@ public class SingleStockMain {
 	}
 	
 	public static void main(String[] args) {
+		long startTime = System.currentTimeMillis();
+		
 		Map<String, double[]> sharpeRatios = new HashMap<String, double[]>();
 		for (String name: traderNames) {
 			sharpeRatios.put(name, new double[ntrials]);
@@ -152,10 +155,17 @@ public class SingleStockMain {
 		for (int i=0; i < ntrials; i++) {
 			Map<String, Double> trialResult = runOneCompleteTrial();
 			for (String name: traderNames) {
-				sharpeRatios.get(name)[i] = trialResult.get(name).doubleValue();
+				if (trialResult.containsKey(name)) {
+					sharpeRatios.get(name)[i] = trialResult.get(name).doubleValue();
+				}
 			}
 		}
 		writeCsv(sharpeRatios);
+		
+		long timeLen = System.currentTimeMillis() - startTime;
+		System.out.print("Completed " + ntrials + " trials, each with " + ntrain + " training and " 
+				+ ntest + " testing steps, in " 
+				+ timeLen / 1000 + " seconds");
 	}
 
 }
