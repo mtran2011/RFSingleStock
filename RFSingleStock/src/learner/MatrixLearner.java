@@ -55,34 +55,38 @@ public abstract class MatrixLearner implements Learner {
 		}
 	}
 	
-	protected abstract double getQ(StateActionPair sa);
+	protected abstract Double getQ(StateActionPair sa);
 	
 	protected Map<Integer, Double> findEpsilonGreedyAction(SingleStockState state, boolean useEpsilon) {
 		// return a map of the action (an int) to its Q(state,action) value
 		assert actions.size() > 0;
 		Integer bestAction = null;
-		double bestQ;
+		Double bestQ = null;
 		if (useEpsilon && random.nextDouble() < epsilon) {
 			bestAction = getRandomAction();
 			bestQ = getQ(new StateActionPair(state, bestAction));
 		} else {
-			double countMaxQ = 1;
+			int countMaxQ = 0;
 			for (Integer action: actions) {
-				if (bestAction == null) {
+				if (bestAction == null || bestQ == null) {
+					countMaxQ = 1;
 					bestQ = getQ(new StateActionPair(state, action));
 					bestAction = action;
 					countMaxQ++;
 				} else {
 					Double newQ = getQ(new StateActionPair(state, action));
 					if (newQ.compareTo(bestQ) > 0) {
+						countMaxQ = 1;
 						bestQ = newQ;
 						bestAction = action;
+						countMaxQ++;
 					} else if (newQ.compareTo(bestQ) == 0) {
 						// randomly choose either the existing bestAction or the new found action
-						// TODO insert a true method for randomizing action
-						if (random.nextFloat() <  0.5) {
+						// this is a true method for randomizing action that has the same q value
+						if (random.nextFloat() <  1.0 / countMaxQ) {
 							bestAction = action;
 						}
+						countMaxQ++;
 					}
 				}
 			}
@@ -101,13 +105,13 @@ public abstract class MatrixLearner implements Learner {
 		assert 0 < discount && discount < 1;
 		
 		this.actions = actions;
-		this.epsilon = initEpsilon;
+		this.initEpsilon = initEpsilon;
 		this.targetCount = targetCount;
 		this.learningRate = learningRate;
 		this.discount = discount;
 		
-		this.initEpsilon = initEpsilon;
 		slope = (minEpsilon - initEpsilon) * 1.0 / (targetCount - targetCount / targetCountSplit);
+		epsilon = initEpsilon;
 		
 		count = 0;
 		Qmap = new HashMap<StateActionPair, Double>();
