@@ -3,6 +3,8 @@ package environment;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.math3.util.Precision;
+
 import common.AssetConfig;
 import stock.Stock;
 
@@ -12,13 +14,15 @@ public class SingleStockExchange {
 	private AssetConfig config;
 	
 	private double roundPrice(double price) {
-		int rounding = config.getRounding();
+		return Precision.round(price, config.getRounding());
+		/*
 		if (rounding == 0) {
 			return Math.round(price);
 		} else if (rounding == 1) {
 			return Math.round(price * 10.0) / 10.0;
 		}
 		return Math.round(price * 100.0) / 100.0;
+		*/
 	}
 	
 	private void notifyTraders() {
