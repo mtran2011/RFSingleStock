@@ -19,7 +19,7 @@ public class SingleStockMain {
 	
 	private static final String rfsarsa = "RF Sarsa", tabularq = "Tabular Q", tabularsarsa = "Tabular Sarsa";
 	private static final String[] traderNames = {rfsarsa, tabularq, tabularsarsa};
-	private static final int ntrain = 100000, ntest = 10000, ntrials = 10;
+	private static final int ntrain = 10000, ntest = 5000, ntrials = 10;
 	
 	public static Map<String, Double> trainAndTest(SingleStockExchange exchange, int ntrain, int ntest) {
 		// run training, then run testing, then return a map of trader's name to its Sharpe ratio during ntest
@@ -83,14 +83,15 @@ public class SingleStockMain {
 		double kappa = 0.1, mu = Math.log(150), sigma = 0.1; // reversion level is 50
 		Stock stock = new OULogStock(currentprice, minprice, maxprice, kappa, mu, sigma);
 		// rounding to 2 decimals so each tick is 1 cent, max holding is 100 lots
-		int lotsize = 100, rounding = 1;
-		AssetConfig config = new AssetConfig(lotsize, rounding, 100*lotsize);
+		int lotsize = 100, rounding = 0;
+		int maxholding = 10 * lotsize;
+		AssetConfig config = new AssetConfig(lotsize, rounding, maxholding);
 		
 		SingleStockExchange exchange = new SingleStockExchange(stock, config);
 		
 		Set<Integer> actions = new HashSet<Integer>();
 		for (int k=-5; k<=5; k++) {
-			actions.add(k);
+			actions.add(k*lotsize);
 		}
 		
 		double initEpsilon = 0.15, learningRate = 0.5, discount = 0.999;
@@ -108,7 +109,7 @@ public class SingleStockMain {
 	}
 
 	public static void writeCsv(Map<String, double[]> sharpeRatios) {
-		String filename = "C:\\Users\\tranh\\Documents\\" + ntrain + "train" + ntest + "test.csv";
+		String filename = "C:\\" + ntrain + "train" + ntest + "test.csv";
 		String delimiter = ",";
 		
 		FileWriter fileWriter = null;
@@ -165,7 +166,7 @@ public class SingleStockMain {
 		long timeLen = System.currentTimeMillis() - startTime;
 		System.out.print("Completed " + ntrials + " trials, each with " + ntrain + " training and " 
 				+ ntest + " testing steps, in " 
-				+ timeLen / 1000 + " seconds");
+				+ timeLen / (1000*60) + " minutes");
 	}
 
 }
