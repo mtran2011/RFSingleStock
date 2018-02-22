@@ -18,6 +18,8 @@ public class SingleStockTrader {
 	private double reward;
 	private SingleStockState state;
 	
+	private final double initWealth = 100; // the initial wealth this trader starts with
+	
 	public SingleStockTrader(String name, double utility, Learner learner, SingleStockExchange exchange) {
 		assert utility >= 0;
 		this.name = name;
@@ -46,7 +48,7 @@ public class SingleStockTrader {
 	
 	public void resetEpisode() {
 		holding = 0;
-		wealth = 100; // start with some nominal positive amount
+		wealth = initWealth; // start with some nominal positive amount
 		stepCount = -1; // 
 		exchange.registerTrader(this);
 		

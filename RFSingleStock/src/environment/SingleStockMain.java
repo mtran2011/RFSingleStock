@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+
 import common.AssetConfig;
 import learner.Learner;
 import learner.RFSarsaMatrixLearner;
@@ -26,11 +28,12 @@ public class SingleStockMain {
 	 * @return A map of each trader's name to its Sharpe ratio during testing steps
 	 */
 	
-	public static Map<String, Double> trainAndTest(SingleStockExchange exchange, int ntrain, int ntest) {
+	public static Map<String, Double> trainAndTest(SingleStockExchange exchange) {
 		// run training, then run testing, then return a map of trader's name to its Sharpe ratio during ntest
 		// run training first
 		exchange.resetEpisode();
-		for (int i=1; i <= ntrain; i++) {
+		
+		for (int i=0; i < ntrain; i++) {
 			for (SingleStockTrader trader: exchange.getTraders()) {
 				trader.placeOrder();
 			}
@@ -45,13 +48,14 @@ public class SingleStockMain {
 		}
 		
 		exchange.resetEpisode();
+		
 		Map<SingleStockTrader, Double> previousWealth = new HashMap<SingleStockTrader, Double>();
+		for (SingleStockTrader trader: exchange.getTraders()) {
+			previousWealth.put(trader, trader.getWealth());
+		}
+		
 		for (int i=0; i < ntest; i++) {
 			for (SingleStockTrader trader: exchange.getTraders()) {
-				if (i==0) {
-					previousWealth.put(trader, trader.getWealth());
-				}
-				
 				trader.placeOrder();
 			}
 			
@@ -67,18 +71,8 @@ public class SingleStockMain {
 		Map<String, Double> sharpe = new HashMap<String, Double>();
 		for (SingleStockTrader trader: exchange.getTraders()) {
 			double[] returns = traderRets.get(trader);
-			double average = 0;
-			for (double ret: returns) {
-				average += ret;
-			}
-			average = average / returns.length;
-			double stdev = 0;
-			for (double ret: returns) {
-				stdev += Math.pow(ret - average, 2);
-			}
-			stdev = stdev / (returns.length - 1);
-			stdev = Math.sqrt(stdev);
-			sharpe.put(trader.getName(), average / stdev);
+			DescriptiveStatistics desc = new DescriptiveStatistics(returns);
+			sharpe.put(trader.getName(), desc.getMean() / desc.getStandardDeviation());
 		}
 		return sharpe;
 	}
@@ -115,11 +109,11 @@ public class SingleStockMain {
 		SingleStockTrader tabularQTrader = new SingleStockTrader(tabularq, utility, tabularQ, exchange);
 		SingleStockTrader tabularSarsaTrader = new SingleStockTrader(tabularsarsa, utility, tabularSarsa, exchange);
 		
-		return trainAndTest(exchange, ntrain, ntest);
+		return trainAndTest(exchange);
 	}
 
 	public static void writeCsv(Map<String, double[]> sharpeRatios) {
-		String filename = "C:\\Users\\tranh\\Documents\\" + ntrain + "train" + ntest + "test.csv";
+		String filename = "C:\\Users\\MinhHa\\Documents\\" + ntrain + "train" + ntest + "test.csv";
 		String delimiter = ",";
 		
 		FileWriter fileWriter = null;
