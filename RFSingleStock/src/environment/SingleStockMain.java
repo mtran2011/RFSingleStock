@@ -12,7 +12,6 @@ import learner.Learner;
 import learner.RFSarsaMatrixLearner;
 import learner.TabularQLearner;
 import learner.TabularSarsa;
-import scala.reflect.internal.Trees.This;
 import stock.OULogStock;
 import stock.Stock;
 
@@ -85,7 +84,7 @@ public class SingleStockMain {
 	}
 	
 	/*
-	 * This method runs one trial from initializing the exchange and learners to training and testing
+	 * Runs one trial from initializing the exchange and learners to training and testing
 	 * @return A map of each trader's name to its Sharpe ratio during testing steps
 	 */
 	

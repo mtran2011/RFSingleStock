@@ -25,10 +25,14 @@ public class SingleStockExchange {
 		*/
 	}
 	
-	private void notifyTraders() {
+	private void notifyOneTrader(SingleStockTrader trader) {
 		double price = roundPrice(stock.getPrice());
+		trader.getNotified(price);
+	}
+	
+	private void notifyTraders() {
 		for (SingleStockTrader trader: traders) {
-			trader.getNotified(price);
+			notifyOneTrader(trader);
 		}
 	}
 	
@@ -40,8 +44,7 @@ public class SingleStockExchange {
 	
 	public void registerTrader(SingleStockTrader trader) {
 		traders.add(trader);
-		double price = roundPrice(stock.getPrice());
-		trader.getNotified(price);
+		notifyOneTrader(trader);
 	}
 	
 	public int getMaxHolding() {
@@ -49,7 +52,7 @@ public class SingleStockExchange {
 	}
 	
 	public Set<SingleStockTrader> getTraders() {
-		return traders;
+		return new HashSet<SingleStockTrader>(traders);
 	}
 
 	public double execute(int quantity) {
