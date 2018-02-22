@@ -14,6 +14,9 @@ public class Test_Stock extends TestCase {
 				// TODO Auto-generated method stub
 			}
 		};
+		
+		assertEquals(price, stock.getPrice(), tol);
+		
 		stock.setPrice(maxprice + 0.1);
 		assertEquals(maxprice, stock.getPrice(), tol);
 		stock.setPrice(minprice - tol*2);
