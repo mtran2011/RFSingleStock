@@ -1,15 +1,12 @@
 package common;
 
-import java.util.Random;
-
 import org.apache.commons.math3.util.Precision;
 
 import junit.framework.TestCase;
 
 public class Test_SingleStockState extends TestCase {
 	public void testEquals() {
-		Random random = new Random();
-		int holding1 = random.nextInt();
+		int holding1 = 10;
 		int holding2 = holding1;
 		double price = 25.78143;
 		int[] roundings = {0, 1, 2};

@@ -20,7 +20,12 @@ public class SingleStockMain {
 	
 	private static final String rfsarsa = "RF Sarsa", tabularq = "Tabular Q", tabularsarsa = "Tabular Sarsa";
 	private static final String[] traderNames = {rfsarsa, tabularq, tabularsarsa};
-	private static final int ntrain = 100000, ntest = 5000, ntrials = 10;
+	private static final int ntrain = 1000000, ntest = 5000, ntrials = 10;
+	
+	/*
+	 * Runs training and testing for a given exchange and its traders
+	 * @return A map of each trader's name to its Sharpe ratio during testing steps
+	 */
 	
 	public static Map<String, Double> trainAndTest(SingleStockExchange exchange, int ntrain, int ntest) {
 		// run training, then run testing, then return a map of trader's name to its Sharpe ratio during ntest
@@ -80,13 +85,13 @@ public class SingleStockMain {
 	}
 	
 	/*
-	 * This method runs one trial including training and then testing
+	 * This method runs one trial from initializing the exchange and learners to training and testing
 	 * @return A map of each trader's name to its Sharpe ratio during testing steps
 	 */
 	
 	public static Map<String, Double> runOneCompleteTrial() {
 		double currentprice = 30, minprice = 0.1, maxprice = 100;
-		double kappa = 0.1, mu = Math.log(50), sigma = 0.1; // reversion level is 50
+		double kappa = 0.5, mu = Math.log(50), sigma = 0.05; // reversion level is 50
 		Stock stock = new OULogStock(currentprice, minprice, maxprice, kappa, mu, sigma);
 		// rounding to 2 decimals means each tick is 1 cent
 		int lotsize = 100, rounding = 0;
@@ -102,7 +107,7 @@ public class SingleStockMain {
 		
 		double initEpsilon = 0.15, learningRate = 0.5, discount = 0.999;
 		int targetCount = ntrain; // when minimum epsilon of 0.001 kicks in
-		Learner rfSarsa = new RFSarsaMatrixLearner(actions, initEpsilon, targetCount, learningRate, discount);
+		// Learner rfSarsa = new RFSarsaMatrixLearner(actions, initEpsilon, targetCount, learningRate, discount);
 		Learner tabularQ = new TabularQLearner(actions, initEpsilon, targetCount, learningRate, discount);
 		Learner tabularSarsa = new TabularSarsa(actions, initEpsilon, targetCount, learningRate, discount);
 		
@@ -115,7 +120,7 @@ public class SingleStockMain {
 	}
 
 	public static void writeCsv(Map<String, double[]> sharpeRatios) {
-		String filename = "C:\\Users\\MinhHa\\Documents\\" + ntrain + "train" + ntest + "test.csv";
+		String filename = "C:\\Users\\tranh\\Documents\\" + ntrain + "train" + ntest + "test.csv";
 		String delimiter = ",";
 		
 		FileWriter fileWriter = null;

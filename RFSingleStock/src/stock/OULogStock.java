@@ -10,7 +10,7 @@ public class OULogStock extends Stock {
 	
 	public OULogStock(double price, double minprice, double maxprice, double kappa, double mu, double sigma) {
 		super(price, minprice, maxprice);
-		assert kappa >= 0 && sigma >= 0 && mu >= 0;
+		assert 1 >= kappa && kappa >= 0 && sigma >= 0 && mu >= 0;
 		assert minprice < Math.exp(mu) && Math.exp(mu) < maxprice; 
 		this.kappa = kappa;
 		this.mu = mu;
