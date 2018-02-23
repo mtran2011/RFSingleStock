@@ -84,7 +84,7 @@ public class SingleStockMain {
 	
 	public static Map<String, Double> runOneCompleteTrial() {
 		double currentprice = 30, minprice = 0.1, maxprice = 100;
-		double kappa = 0.5, mu = Math.log(50), sigma = 0.05; // reversion level is 50
+		double kappa = 0.1, mu = Math.log(50), sigma = 0.01; // reversion level is 50
 		Stock stock = new OULogStock(currentprice, minprice, maxprice, kappa, mu, sigma);
 		// rounding to 2 decimals means each tick is 1 cent
 		int lotsize = 100, rounding = 0;
@@ -94,7 +94,7 @@ public class SingleStockMain {
 		SingleStockExchange exchange = new SingleStockExchange(stock, config);
 		
 		Set<Integer> actions = new HashSet<Integer>();
-		for (int k=-5; k<=5; k++) {
+		for (int k = -5; k <= 5; k++) {
 			actions.add(k*lotsize);
 		}
 		
@@ -104,7 +104,7 @@ public class SingleStockMain {
 		Learner tabularQ = new TabularQLearner(actions, initEpsilon, targetCount, learningRate, discount);
 		Learner tabularSarsa = new TabularSarsa(actions, initEpsilon, targetCount, learningRate, discount);
 		
-		double utility = 0.001;
+		double utility = 0.1;
 		// SingleStockTrader rfSarsaTrader = new SingleStockTrader(rfsarsa, utility, rfSarsa, exchange);
 		SingleStockTrader tabularQTrader = new SingleStockTrader(tabularq, utility, tabularQ, exchange);
 		SingleStockTrader tabularSarsaTrader = new SingleStockTrader(tabularsarsa, utility, tabularSarsa, exchange);

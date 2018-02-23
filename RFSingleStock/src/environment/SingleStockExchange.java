@@ -13,20 +13,8 @@ public class SingleStockExchange {
 	private Stock stock;
 	private AssetConfig config;
 	
-	private double roundPrice(double price) {
-		return Precision.round(price, config.getRounding());
-		/*
-		if (rounding == 0) {
-			return Math.round(price);
-		} else if (rounding == 1) {
-			return Math.round(price * 10.0) / 10.0;
-		}
-		return Math.round(price * 100.0) / 100.0;
-		*/
-	}
-	
 	private void notifyOneTrader(SingleStockTrader trader) {
-		double price = roundPrice(stock.getPrice());
+		double price = Precision.round(stock.getPrice(), config.getRounding());
 		trader.getNotified(price);
 	}
 	
