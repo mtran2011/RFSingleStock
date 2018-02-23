@@ -1,5 +1,7 @@
 package environment;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -59,6 +61,9 @@ public class MainRunningWealth {
 	public static void main(String[] args) {
 		long startTime = System.currentTimeMillis();
 		
+		Map<String, double[]> wealthResult = completeTrainingAndTesting();
+		File filename = new File("C:\\Users\\tranh\\Documents\\wealth after " + ntrain + "train" + ntest + "test.csv");
+		Helpers.writeCsvTable(wealthResult, filename);
 		
 		long timeLen = System.currentTimeMillis() - startTime;
 		System.out.print("Completed " + ntrain + " training and " + ntest + " testing steps in " 

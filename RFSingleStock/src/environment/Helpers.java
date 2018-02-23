@@ -18,6 +18,9 @@ public class Helpers {
 		String[] headers = table.keySet().toArray(new String[table.keySet().size()]);
 		assert headers.length > 0;
 		int nrows = table.get(headers[0]).length;
+		for (double[] columnData : table.values()) {
+			assert columnData.length == nrows;
+		}
 		assert nrows > 0;
 		
 		FileWriter fileWriter = null;
