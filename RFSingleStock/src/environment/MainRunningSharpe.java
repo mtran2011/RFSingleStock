@@ -17,7 +17,7 @@ import learner.TabularSarsa;
 import stock.OULogStock;
 import stock.Stock;
 
-public class SingleStockMain {
+public class MainRunningSharpe {
 	
 	private static final String rfsarsa = "RF Sarsa", tabularq = "Tabular Q", tabularsarsa = "Tabular Sarsa";
 	private static final String[] traderNames = {rfsarsa, tabularq, tabularsarsa};
