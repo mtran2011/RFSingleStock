@@ -1,39 +1,30 @@
 package stock;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Test_OULogStock extends TestCase {
+import org.junit.jupiter.api.Test;
+
+public class Test_OULogStock {
 	
 	private final double delta = 1e-6;
 	
-	public void test_constructor() {
-		double price = 5, minprice = 1, maxprice = 10, kappa = 0.1, sigma = 0.1;
-		double mu = Math.log(50);
-		int rounding = 0;
-		try {
-			Stock stock = new OULogStock(price, minprice, maxprice, rounding, kappa, mu, sigma);
-			fail();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-	}
-	
-	public void test_simulateFromRevertingLevel() {
+	@Test
+	public void simulateFromRevertingLevel() {
 		double price = 30.23, minprice = 0.1, maxprice = 100, kappa = 0.1, sigma = 0;
-		double mu = Math.log(price);
+		double reversion = price;
 		int rounding = 2;
-		Stock stock = new OULogStock(price, minprice, maxprice, rounding, kappa, mu, sigma);
+		Stock stock = new OULogStock(price, minprice, maxprice, rounding, kappa, reversion, sigma);
 		stock.simulate();
 		assertEquals(price, stock.getPrice(), delta);
 	}
 	
-	public void test_simulateOneStep() {
+	@Test
+	public void simulateKappaEqualOne() {
 		double price = 30, minprice = 0.1, maxprice = 100; 
 		double kappa = 1, sigma = 0;
 		double revertingLevel = 50;
-		double mu = Math.log(revertingLevel);
 		int rounding = 2;
-		Stock stock = new OULogStock(price, minprice, maxprice, rounding, kappa, mu, sigma);
+		Stock stock = new OULogStock(price, minprice, maxprice, rounding, kappa, revertingLevel, sigma);
 		stock.simulate();
 		assertEquals(revertingLevel, stock.getPrice(), delta);
 	}

@@ -1,12 +1,12 @@
 package common;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.apache.commons.math3.util.Precision;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class Test_StateActionPair extends TestCase {
+public class Test_StateActionPair {
+	@Test
 	public void testEquals() {
 		int holding1 = 10, holding2 = 10;
 		double p1 = 25.78, p2 = 25.78;

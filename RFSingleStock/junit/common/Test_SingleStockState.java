@@ -1,10 +1,12 @@
 package common;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class Test_SingleStockState extends TestCase {
+public class Test_SingleStockState {
+	@Test
 	public void testEquals() {
 		int holding1 = 10, holding2 = 10;
 		double p1 = 25.78, p2 = 25.78;

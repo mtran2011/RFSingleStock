@@ -7,9 +7,9 @@ public abstract class Stock {
 	private final int[] possibleRoundings = new int[] {0, 1, 2}; 
 	
 	private double price;
-	private double minprice;
-	private double maxprice;
-	private int rounding;
+	private final double minprice;
+	private final double maxprice;
+	private final int rounding;
 	
 	public Stock(double price, double minprice, double maxprice, int rounding) {
 		assert minprice < price && price < maxprice;

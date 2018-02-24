@@ -1,18 +1,21 @@
 package stock;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Test_Stock extends TestCase {
+import org.junit.jupiter.api.Test;
+
+public class Test_Stock {
 	
 	private final double tol = 1e-6;
 	
-	public void test_setPriceMinMax() {
+	@Test
+	public void setPriceMinMax() {
 		double price = 30, minprice = 0.1, maxprice = 100;
 		int rounding = 2;
 		Stock stock = new Stock(price, minprice, maxprice, rounding) {
 			@Override
 			public void simulate() {
-				// TODO Auto-generated method stub
+				// do nothing
 			}
 		};
 		assertEquals(price, stock.getPrice(), tol);
@@ -23,14 +26,15 @@ public class Test_Stock extends TestCase {
 		assertEquals(minprice, stock.getPrice(), tol);
 	}
 	
-	public void test_roundPrice() {
+	@Test
+	public void roundPriceConstructor() {
 		double price = 30.351247, minprice = 0.1, maxprice = 100;
 		int[] roundings = {0, 1, 2};
 		for (int rounding : roundings) {
 			Stock stock = new Stock(price, minprice, maxprice, rounding) {
 				@Override
 				public void simulate() {
-					// TODO Auto-generated method stub
+					// do nothing
 				}
 			};
 			switch (rounding) {
