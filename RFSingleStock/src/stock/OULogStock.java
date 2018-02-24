@@ -8,8 +8,8 @@ public class OULogStock extends Stock {
 	private double sigma;
 	private Random random;
 	
-	public OULogStock(double price, double minprice, double maxprice, double kappa, double mu, double sigma) {
-		super(price, minprice, maxprice);
+	public OULogStock(double price, double minprice, double maxprice, int rounding, double kappa, double mu, double sigma) {
+		super(price, minprice, maxprice, rounding);
 		assert 1 >= kappa && kappa >= 0 && sigma >= 0 && mu >= 0;
 		assert minprice < Math.exp(mu) && Math.exp(mu) < maxprice; 
 		this.kappa = kappa;
@@ -20,7 +20,6 @@ public class OULogStock extends Stock {
 	
 	@Override
 	public void simulate() {
-		// simulate over dt = 1.0;
 		double price = getPrice();
 		if (Double.compare(price, 0) == 0) {
 			return;

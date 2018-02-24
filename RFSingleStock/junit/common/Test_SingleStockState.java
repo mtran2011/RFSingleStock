@@ -1,5 +1,7 @@
 package common;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+
 import org.apache.commons.math3.util.Precision;
 
 import junit.framework.TestCase;
@@ -18,10 +20,7 @@ public class Test_SingleStockState extends TestCase {
 			SingleStockState state2 = new SingleStockState(holding2, p2);
 			assertEquals(state1, state2);
 			assertEquals(state1.hashCode(), state2.hashCode());
+			assertArrayEquals(state1.toArray(), state2.toArray());
 		}
-	}
-	
-	public void testToArray() {
-		
 	}
 }

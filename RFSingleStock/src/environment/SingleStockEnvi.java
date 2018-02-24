@@ -14,7 +14,7 @@ public class SingleStockEnvi {
 		exchange.resetEpisode();
 		for (int i = 0; i < ntrain; i++) {
 			for (SingleStockTrader trader : exchange.getTraders()) {
-				trader.placeOrder();
+				trader.placeOrder(exchange);
 			}
 			
 			exchange.simulate();
@@ -38,7 +38,7 @@ public class SingleStockEnvi {
 		
 		for (int i = 1; i <= ntest; i++) {
 			for (SingleStockTrader trader : traders) {
-				trader.placeOrder();
+				trader.placeOrder(exchange);
 			}
 			
 			exchange.simulate();

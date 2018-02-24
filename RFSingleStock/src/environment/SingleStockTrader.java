@@ -4,66 +4,59 @@ import common.SingleStockState;
 import learner.Learner;
 
 public class SingleStockTrader {
+	private final double initWealth = 100; // the initial wealth this trader starts with
+	
 	private String name;
 	private double utility;
 	private Learner learner;
-	private SingleStockExchange exchange;
 	
 	private int holding;
+	private double wealth;
 	private double lastSeenPrice;
 	private double lastTransactionCost;
-	private double wealth;
 	private int stepCount;
 	
 	private double reward;
 	private SingleStockState state;
-	
-	private final double initWealth = 100; // the initial wealth this trader starts with
 	
 	public SingleStockTrader(String name, double utility, Learner learner, SingleStockExchange exchange) {
 		assert utility >= 0;
 		this.name = name;
 		this.utility = utility;
 		this.learner = learner;
-		this.exchange = exchange;
-		resetEpisode();
+		resetEpisode(exchange);
 	}
 	
-	public void getNotified(double price) {
-		if (stepCount == -1) {
-			// at initialization
-			lastSeenPrice = price;
-			stepCount += 1;
-			state = new SingleStockState(holding, lastSeenPrice);
-			return;
-		}
-		double pnl = holding * (price - lastSeenPrice);
-		lastSeenPrice = price;
-		double deltaWealth = pnl - lastTransactionCost;
-		wealth += deltaWealth;
-		stepCount += 1;
-		reward = deltaWealth - 0.5 * utility * Math.pow(deltaWealth - wealth / stepCount, 2);
-		state = new SingleStockState(holding, lastSeenPrice);
-	}
-	
-	public void resetEpisode() {
+	public void resetEpisode(SingleStockExchange exchange) {
 		holding = 0;
 		wealth = initWealth; // start with some nominal positive amount
-		stepCount = -1; // 
-		exchange.registerTrader(this);
+		stepCount = -1; // reset to before the 0th step 
+		exchange.registerTrader(this); // register self with exchange and get latest price
 		
 		lastTransactionCost = 0;
 		reward = 0;
 		learner.resetEpisode();
 	}
 	
-	public void placeOrder() {
-		int order;
-		if (stepCount < 1) {
-			order = learner.act(state);
+	public void getNotified(double price) {
+		if (stepCount == -1) {
+			// at initialization
+			lastSeenPrice = price;
+			stepCount = 0;
+			state = new SingleStockState(holding, lastSeenPrice);
 		} else {
-			order = learner.learnThenAct(reward, state);
+			double pnl = holding * (price - lastSeenPrice);
+			lastSeenPrice = price;
+			double deltaWealth = pnl - lastTransactionCost;
+			wealth += deltaWealth;
+			stepCount += 1;
+			reward = deltaWealth - 0.5 * utility * Math.pow(deltaWealth - wealth / stepCount, 2);
+			state = new SingleStockState(holding, price);
 		}
+	}
+	
+	public void placeOrder(SingleStockExchange exchange) {
+		int order = stepCount < 1 ? learner.act(state) : learner.learnThenAct(reward, state);
 		int maxHolding = exchange.getMaxHolding();
 		if ((holding + order) > maxHolding) {
 			order = maxHolding - holding;

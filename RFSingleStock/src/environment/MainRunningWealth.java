@@ -18,18 +18,17 @@ import stock.Stock;
 
 public class MainRunningWealth {
 	
-	private static final String rfSarsa = "RF Sarsa", tabularQ = "Tabular Q", tabularSarsa = "Tabular Sarsa";
+	private static final String rfSarsa = "RF Sarsa", tabQ = "Tabular Q", tabSarsa = "Tabular Sarsa";
 	private static final int ntrain = 1000000, ntest = 5000;
 	
 	private static Map<String, double[]> completeTrainingAndTesting() {
 		double originalPrice = 30, minprice = 0.1, maxprice = 100;
 		double kappa = 0.1, mu = Math.log(50), sigma = 0.1; // reversion price level is 50
-		Stock stock = new OULogStock(originalPrice, minprice, maxprice, kappa, mu, sigma);
-		// rounding to 2 decimals means each tick is 1 cent, or 0 decimal means each tick is 1 dollar
 		int lotsize = 100, rounding = 0;
 		int maxholding = 10 * lotsize;
-		AssetConfig config = new AssetConfig(lotsize, rounding, maxholding);
 		
+		Stock stock = new OULogStock(originalPrice, minprice, maxprice, rounding, kappa, mu, sigma);
+		AssetConfig config = new AssetConfig(lotsize, maxholding);
 		SingleStockExchange exchange = new SingleStockExchange(stock, config);
 		
 		Set<Integer> actions = new HashSet<Integer>();
@@ -39,14 +38,12 @@ public class MainRunningWealth {
 		
 		double initEpsilon = 0.15, learningRate = 0.5, discount = 0.999;
 		int targetCount = ntrain; // when minimum epsilon of 0.001 kicks in
-		// Learner rfSarsa = new RFSarsaMatrixLearner(actions, initEpsilon, targetCount, learningRate, discount);
 		Learner tabularQLearner = new TabularQLearner(actions, initEpsilon, targetCount, learningRate, discount);
 		Learner tabularSarsaLearner = new TabularSarsa(actions, initEpsilon, targetCount, learningRate, discount);
 		
 		double utility = 0.01;
-		// SingleStockTrader rfSarsaTrader = new SingleStockTrader(rfsarsa, utility, rfSarsa, exchange);
-		SingleStockTrader tabularQTrader = new SingleStockTrader(tabularQ, utility, tabularQLearner, exchange);
-		SingleStockTrader tabularSarsaTrader = new SingleStockTrader(tabularSarsa, utility, tabularSarsaLearner, exchange);
+		SingleStockTrader tabularQTrader = new SingleStockTrader(tabQ, utility, tabularQLearner, exchange);
+		SingleStockTrader tabularSarsaTrader = new SingleStockTrader(tabSarsa, utility, tabularSarsaLearner, exchange);
 		
 		SingleStockEnvi.runTrainingPhase(exchange, ntrain);
 		Map<SingleStockTrader, double[]> wealths = SingleStockEnvi.runTestingPhase(exchange, ntest);

@@ -35,7 +35,7 @@ public class MainRunningSharpe {
 		
 		for (int i=0; i < ntrain; i++) {
 			for (SingleStockTrader trader: exchange.getTraders()) {
-				trader.placeOrder();
+				trader.placeOrder(exchange);
 			}
 			exchange.simulate();
 		}
@@ -56,7 +56,7 @@ public class MainRunningSharpe {
 		
 		for (int i=0; i < ntest; i++) {
 			for (SingleStockTrader trader: exchange.getTraders()) {
-				trader.placeOrder();
+				trader.placeOrder(exchange);
 			}
 			
 			exchange.simulate();
