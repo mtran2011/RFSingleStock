@@ -42,6 +42,7 @@ public abstract class MatrixLearner implements Learner {
 			}
 			i++;
 		}
+		assert false; // Execution should never reach this point
 		return null;
 	}
 	

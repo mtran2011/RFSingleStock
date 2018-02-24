@@ -19,15 +19,15 @@ import stock.Stock;
 public class MainRunningWealth {
 	
 	private static final String rfSarsa = "RF Sarsa", tabQ = "Tabular Q", tabSarsa = "Tabular Sarsa";
-	private static final int ntrain = 400, ntest = 50;
+	private static final int ntrain = 35000, ntest = 500;
 	
 	private static Map<String, double[]> completeTrainingAndTesting() {
-		double originalPrice = 5, minprice = 1, maxprice = 10;
-		double kappa = 0.1, mu = Math.log(50), sigma = 0.05; // reversion price level is 50
+		double originalPrice = 3, minprice = 1, maxprice = 10;
+		double kappa = 0.05, reversion = 5, sigma = 0.05; // reversion price level is 50
 		int lotsize = 100, rounding = 0;
 		int maxholding = 5 * lotsize;
 		
-		Stock stock = new OULogStock(originalPrice, minprice, maxprice, rounding, kappa, mu, sigma);
+		Stock stock = new OULogStock(originalPrice, minprice, maxprice, rounding, kappa, reversion, sigma);
 		AssetConfig config = new AssetConfig(lotsize, maxholding);
 		SingleStockExchange exchange = new SingleStockExchange(stock, config);
 		

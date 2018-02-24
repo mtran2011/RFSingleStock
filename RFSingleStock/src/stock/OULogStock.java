@@ -8,12 +8,12 @@ public class OULogStock extends Stock {
 	private double sigma;
 	private Random random;
 	
-	public OULogStock(double price, double minprice, double maxprice, int rounding, double kappa, double mu, double sigma) {
+	public OULogStock(double price, double minprice, double maxprice, int rounding, double kappa, double revertingLvl, double sigma) {
 		super(price, minprice, maxprice, rounding);
-		assert 1 >= kappa && kappa >= 0 && sigma >= 0 && mu >= 0;
-		assert minprice < Math.exp(mu) && Math.exp(mu) < maxprice; 
+		assert 1 >= kappa && kappa >= 0 && sigma >= 0;
+		assert minprice < revertingLvl && revertingLvl < maxprice; 
 		this.kappa = kappa;
-		this.mu = mu;
+		this.mu = Math.log(revertingLvl);
 		this.sigma = sigma;
 		random = new Random();
 	}
