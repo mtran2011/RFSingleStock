@@ -10,7 +10,12 @@ public class Test_OULogStock extends TestCase {
 		double price = 5, minprice = 1, maxprice = 10, kappa = 0.1, sigma = 0.1;
 		double mu = Math.log(50);
 		int rounding = 0;
-		Stock stock = new OULogStock(price, minprice, maxprice, rounding, kappa, mu, sigma);
+		try {
+			Stock stock = new OULogStock(price, minprice, maxprice, rounding, kappa, mu, sigma);
+			fail();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 	
 	public void test_simulateFromRevertingLevel() {
