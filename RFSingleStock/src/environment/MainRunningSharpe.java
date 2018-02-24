@@ -83,14 +83,13 @@ public class MainRunningSharpe {
 	 */
 	
 	public static Map<String, Double> runOneCompleteTrial() {
-		double currentprice = 30, minprice = 0.1, maxprice = 100;
-		double kappa = 0.1, mu = Math.log(50), sigma = 0.01; // reversion level is 50
-		Stock stock = new OULogStock(currentprice, minprice, maxprice, kappa, mu, sigma);
-		// rounding to 2 decimals means each tick is 1 cent
+		double originalPrice = 30, minprice = 0.1, maxprice = 100;
+		double kappa = 0.1, mu = Math.log(50), sigma = 0.1; // reversion price level is 50
 		int lotsize = 100, rounding = 0;
 		int maxholding = 10 * lotsize;
-		AssetConfig config = new AssetConfig(lotsize, rounding, maxholding);
 		
+		Stock stock = new OULogStock(originalPrice, minprice, maxprice, rounding, kappa, mu, sigma);
+		AssetConfig config = new AssetConfig(lotsize, maxholding);
 		SingleStockExchange exchange = new SingleStockExchange(stock, config);
 		
 		Set<Integer> actions = new HashSet<Integer>();

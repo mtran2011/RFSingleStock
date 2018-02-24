@@ -9,7 +9,8 @@ public class Test_OULogStock extends TestCase {
 	public void test_simulateFromRevertingLevel() {
 		double price = 30, minprice = 0.1, maxprice = 100, kappa = 0.1, sigma = 0;
 		double mu = Math.log(price);
-		Stock stock = new OULogStock(price, minprice, maxprice, kappa, mu, sigma);
+		int rounding = 2;
+		Stock stock = new OULogStock(price, minprice, maxprice, rounding, kappa, mu, sigma);
 		stock.simulate();
 		assertEquals(price, stock.getPrice(), delta);
 	}
@@ -19,7 +20,8 @@ public class Test_OULogStock extends TestCase {
 		double kappa = 1, sigma = 0;
 		double revertingLevel = 50;
 		double mu = Math.log(revertingLevel);
-		Stock stock = new OULogStock(price, minprice, maxprice, kappa, mu, sigma);
+		int rounding = 2;
+		Stock stock = new OULogStock(price, minprice, maxprice, rounding, kappa, mu, sigma);
 		stock.simulate();
 		assertEquals(revertingLevel, stock.getPrice(), delta);
 	}

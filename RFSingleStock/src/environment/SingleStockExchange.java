@@ -46,7 +46,7 @@ public class SingleStockExchange {
 
 	public void resetEpisode() {
 		for (SingleStockTrader trader: traders) {
-			trader.resetEpisode();
+			trader.resetEpisode(this);
 		}
 	}
 

@@ -59,7 +59,7 @@ public class MainRunningWealth {
 		long startTime = System.currentTimeMillis();
 		
 		Map<String, double[]> wealthResult = completeTrainingAndTesting();
-		File filename = new File("C:\\Users\\tranh\\Documents\\wealth after " + ntrain + "train" + ntest + "test.csv");
+		File filename = new File("C:\\Users\\MinhHa\\Documents\\wealth after " + ntrain + "train" + ntest + "test.csv");
 		Helpers.writeCsvTable(wealthResult, filename);
 		
 		long timeLen = System.currentTimeMillis() - startTime;
