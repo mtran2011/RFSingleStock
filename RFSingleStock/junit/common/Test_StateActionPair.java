@@ -8,19 +8,15 @@ import junit.framework.TestCase;
 
 public class Test_StateActionPair extends TestCase {
 	public void testEquals() {
-		int holding1 = 10;
-		int holding2 = holding1;
-		double price = 25.78143;
-		int[] roundings = {0, 1, 2};
-		for (int rounding : roundings) {
-			double p1 = Precision.round(price, rounding);
-			double delta = Math.pow(10, -(rounding + 2));
-			double p2 = Precision.round(price + delta, rounding);
-			SingleStockState state1 = new SingleStockState(holding1, p1);
-			SingleStockState state2 = new SingleStockState(holding2, p2);
-			assertEquals(state1, state2);
-			assertEquals(state1.hashCode(), state2.hashCode());
-			assertArrayEquals(state1.toArray(), state2.toArray());
-		}
+		int holding1 = 10, holding2 = 10;
+		double p1 = 25.78, p2 = 25.78;
+		int action1 = -5, action2 = -5;
+		SingleStockState state1 = new SingleStockState(holding1, p1);
+		SingleStockState state2 = new SingleStockState(holding2, p2);
+		StateActionPair pair1 = new StateActionPair(state1, action1);
+		StateActionPair pair2 = new StateActionPair(state2, action2);
+		assertEquals(pair1, pair2);
+		assertEquals(pair1.hashCode(), pair2.hashCode());
+		assertArrayEquals(pair1.toArray(), pair2.toArray());
 	}
 }
