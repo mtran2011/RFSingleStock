@@ -26,8 +26,8 @@ public abstract class MatrixLearner implements Learner {
 	
 	protected Map<StateActionPair, Double> Qmap; // map a pair of (s,a) to Q(s,a)
 	
-	protected double learningRate;
-	protected double discount;
+	protected final double learningRate;
+	protected final double discount;
 	
 	private Random random;
 	
@@ -60,7 +60,6 @@ public abstract class MatrixLearner implements Learner {
 	
 	protected Map<Integer, Double> findEpsilonGreedyAction(SingleStockState state, boolean useEpsilon) {
 		// return a map of the action (an int) to its Q(state,action) value
-		assert actions.size() > 0;
 		Integer bestAction = null;
 		Double bestQ = null;
 		if (useEpsilon && random.nextDouble() < epsilon) {
