@@ -8,6 +8,8 @@ import stock.Stock;
 import trader.SingleStockTrader;
 
 public class SingleStockExchange {
+	private static final double costFactor = 0;
+	
 	private Set<SingleStockTrader> traders;
 	private Stock stock;
 	private AssetConfig config;
@@ -42,7 +44,7 @@ public class SingleStockExchange {
 		double numLots = Math.abs(quantity) * 1.0 / config.getLotsize();
 		double spreadCost = numLots * tick;
 		double impactCost = Math.pow(numLots, 2) * tick;
-		return spreadCost + impactCost;
+		return (spreadCost + impactCost) * costFactor;
 	}
 
 	public void resetEpisode() {

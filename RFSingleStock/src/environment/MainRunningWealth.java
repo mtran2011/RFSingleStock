@@ -1,7 +1,6 @@
 package environment;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -20,11 +19,11 @@ import trader.SingleStockTrader;
 public class MainRunningWealth {
 	
 	private static final String rfSarsa = "RF Sarsa", tabQ = "Tabular Q", tabSarsa = "Tabular Sarsa";
-	private static final int ntrain = 35000, ntest = 500;
+	private static final int ntrain = 50000, ntest = 500;
 	
 	private static Map<String, double[]> completeTrainingAndTesting() {
-		double originalPrice = 103, minprice = 100, maxprice = 110;
-		double kappa = 0.05, reversion = 105, sigma = 0.01; // reversion price level is 50
+		double originalPrice = 105, minprice = 90, maxprice = 110;
+		double kappa = 0.05, reversion = 100, sigma = 0.01; // reversion price level is 50
 		int lotsize = 1, rounding = 0;
 		int maxholding = 10 * lotsize;
 		
