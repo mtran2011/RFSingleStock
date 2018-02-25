@@ -15,6 +15,7 @@ import learner.TabularQLearner;
 import learner.TabularSarsa;
 import stock.OULogStock;
 import stock.Stock;
+import trader.SingleStockTrader;
 
 public class MainRunningWealth {
 	

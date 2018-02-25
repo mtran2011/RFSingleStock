@@ -1,6 +1,7 @@
-package environment;
+package trader;
 
 import common.SingleStockState;
+import environment.SingleStockExchange;
 import learner.Learner;
 
 public class SingleStockTrader {
@@ -26,6 +27,11 @@ public class SingleStockTrader {
 		this.learner = learner;
 		resetEpisode(exchange);
 	}
+	
+	/*
+	 * Reset holding, wealth, etc. before an episode
+	 * Register itself with an exchange and get updated price
+	 */
 	
 	public void resetEpisode(SingleStockExchange exchange) {
 		holding = 0;

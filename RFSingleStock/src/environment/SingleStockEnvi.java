@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import trader.SingleStockTrader;
+
 public class SingleStockEnvi {
 	
 	/*

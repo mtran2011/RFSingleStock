@@ -5,6 +5,7 @@ import java.util.Set;
 
 import common.AssetConfig;
 import stock.Stock;
+import trader.SingleStockTrader;
 
 public class SingleStockExchange {
 	private Set<SingleStockTrader> traders;
