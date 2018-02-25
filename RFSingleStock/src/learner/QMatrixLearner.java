@@ -26,9 +26,9 @@ public abstract class QMatrixLearner extends MatrixLearner {
 	public int learnThenAct(double reward, SingleStockState state) {
 		if (lastStateAction == null) {
 			return act(state);
+		} else {
+			trainInternally(reward, state);
+			return act(state);
 		}
-		trainInternally(reward, state);
-		return act(state);
 	}
-
 }

@@ -22,7 +22,7 @@ public abstract class MatrixLearner implements Learner {
 	private final int targetCountSplit = 4; // epsilon is flat for the first 1/4 of target count, then linear decay to min
 	private final double initEpsilon; 
 	private final double slope; // the slope of epsilon linear decay
-	protected int count; // number of steps completed
+	protected int count; // number of steps completed, used to update epsilon
 	
 	protected Map<StateActionPair, Double> Qmap; // map a pair of (s,a) to Q(s,a)
 	
