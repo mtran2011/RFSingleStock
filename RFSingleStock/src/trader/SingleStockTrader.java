@@ -7,9 +7,9 @@ import learner.Learner;
 public class SingleStockTrader {
 	private final double initWealth = 100; // the initial wealth this trader starts with
 	
-	private String name;
-	private double utility;
-	private Learner learner;
+	private final String name;
+	private final double utility;
+	private final Learner learner;
 	
 	private int holding;
 	private double wealth;
@@ -81,4 +81,33 @@ public class SingleStockTrader {
 	public double getWealth() {
 		return wealth;
 	}
+	
+	/*
+	 * Getter methods (pkg visible) for testing purpose only
+	 */
+	
+	int getHolding() {
+		return holding;
+	}
+
+	double getLastSeenPrice() {
+		return lastSeenPrice;
+	}
+
+	double getLastTransactionCost() {
+		return lastTransactionCost;
+	}
+
+	int getStepCount() {
+		return stepCount;
+	}
+
+	double getReward() {
+		return reward;
+	}
+
+	SingleStockState getState() {
+		return state;
+	}
+
 }
