@@ -2,6 +2,8 @@ package learner;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
+
 import common.SingleStockState;
 import common.StateActionPair;
 
@@ -21,8 +23,9 @@ public abstract class SarsaMatrixLearner extends MatrixLearner {
 	@Override
 	public int learnThenAct(double reward, SingleStockState state) {
 		Map<Integer, Double> res = findEpsilonGreedyAction(state, true);
-		int action = res.keySet().iterator().next();
-		double nextQ = res.values().iterator().next();
+		Entry<Integer, Double> entry = res.entrySet().iterator().next();
+		int action = entry.getKey();
+		double nextQ = entry.getValue();
 		
 		if (lastStateAction != null) {
 			trainInternally(reward, nextQ);

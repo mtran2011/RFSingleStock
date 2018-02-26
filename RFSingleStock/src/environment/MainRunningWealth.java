@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import common.AssetConfig;
-import fansi.Str;
 import learner.Learner;
 import learner.TabularQLearner;
 import learner.TabularSarsa;
@@ -19,15 +18,15 @@ import trader.SingleStockTrader;
 public class MainRunningWealth {
 	
 	private static final String rfSarsa = "RF Sarsa", tabQ = "Tabular Q", tabSarsa = "Tabular Sarsa";
-	private static final int ntrain = 50000, ntest = 500;
+	private static final int ntrain = (int) 55e3, ntest = 1000;
 	
 	private static Map<String, double[]> completeTrainingAndTesting() {
 		double originalPrice = 105, minprice = 90, maxprice = 110;
-		double kappa = 0.05, reversion = 100, sigma = 0.01; // reversion price level is 50
+		double kappa = 0.05, revertingLv = 100, sigma = 0.01;
 		int lotsize = 1, rounding = 0;
 		int maxholding = 10 * lotsize;
 		
-		Stock stock = new OULogStock(originalPrice, minprice, maxprice, rounding, kappa, reversion, sigma);
+		Stock stock = new OULogStock(originalPrice, minprice, maxprice, rounding, kappa, revertingLv, sigma);
 		AssetConfig config = new AssetConfig(lotsize, maxholding);
 		SingleStockExchange exchange = new SingleStockExchange(stock, config);
 		
@@ -36,7 +35,7 @@ public class MainRunningWealth {
 			actions.add(k*lotsize);
 		}
 		
-		double initEpsilon = 0.15, learningRate = 0.1, discount = 0.999;
+		double initEpsilon = 0.15, learningRate = 0.5, discount = 0.999;
 		int targetCount = ntrain; // when minimum epsilon of 0.001 kicks in
 		Learner tabularQLearner = new TabularQLearner(actions, initEpsilon, targetCount, learningRate, discount);
 		Learner tabularSarsaLearner = new TabularSarsa(actions, initEpsilon, targetCount, learningRate, discount);
@@ -59,7 +58,7 @@ public class MainRunningWealth {
 		long startTime = System.currentTimeMillis();
 		
 		Map<String, double[]> wealthResult = completeTrainingAndTesting();
-		File filename = new File("C:\\Users\\MinhHa\\Documents\\wealth after " + ntrain + "train" + ntest + "test.csv");
+		File filename = new File("C:\\Users\\tranh\\Documents\\wealth after " + ntrain + "train" + ntest + "test.csv");
 		Helpers.writeCsvTable(wealthResult, filename);
 		
 		long timeLen = System.currentTimeMillis() - startTime;

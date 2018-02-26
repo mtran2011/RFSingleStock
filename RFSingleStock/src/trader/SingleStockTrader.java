@@ -5,7 +5,7 @@ import environment.SingleStockExchange;
 import learner.Learner;
 
 public class SingleStockTrader {
-	private final double initWealth = 100; // the initial wealth this trader starts with
+	private final double initWealth = 1e6; // the initial wealth this trader starts with
 	
 	private final String name;
 	private final double utility;
