@@ -18,7 +18,8 @@ import trader.SingleStockTrader;
 public class MainRunningWealth {
 	
 	private static final String rfSarsa = "RF Sarsa", tabQ = "Tabular Q", tabSarsa = "Tabular Sarsa";
-	private static final int ntrain = (int) 1e7, ntest = 5000;
+	private static final int ntrain = (int) 3e4; 
+	private static final int ntest = 5000;
 	
 	private static Map<String, double[]> completeTrainingAndTesting() {
 		double originalPrice = 50, minprice = 0.1, maxprice = 100;

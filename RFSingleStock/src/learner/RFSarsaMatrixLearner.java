@@ -12,7 +12,7 @@ public class RFSarsaMatrixLearner extends SarsaMatrixLearner {
 	private final int ntrees = 30;
 	private final int nodeSize = 5;
 	private final int mtry = 2; // number of random features selected for each tree
-	private final int stepMultiple = 500;
+	private final int stepMultiple = 1000;
 	
 	public RFSarsaMatrixLearner(Set<Integer> actions, double initEpsilon, int targetCount, double learningRate,
 			double discount) {
