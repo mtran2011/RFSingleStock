@@ -9,7 +9,7 @@ import trader.SingleStockTrader;
 
 public class SingleStockExchange {
 	private static final double spreadFactor = 1;
-	private static final double impactFactor = 0.1;
+	private static final double impactFactor = 1;
 	
 	private Set<SingleStockTrader> traders;
 	private Stock stock;
@@ -42,9 +42,8 @@ public class SingleStockExchange {
 
 	public double execute(int quantity) {
 		double tick = Math.pow(10, -stock.getRounding());
-		double numLots = Math.abs(quantity) * 1.0 / config.getLotsize();
-		double spreadCost = numLots * tick;
-		double impactCost = Math.pow(numLots, 2) * tick;
+		double spreadCost = Math.abs(quantity) * tick;
+		double impactCost = Math.pow(quantity, 2) * tick / config.getLotsize();
 		return spreadCost * spreadFactor + impactCost * impactFactor;
 	}
 
