@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Map;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+
 public class Helpers {
 	
 	/*
@@ -55,4 +57,16 @@ public class Helpers {
 			}
 		}
 	}
+	
+	public static double calculateSharpe(double[] wealth) {
+		int ndays = wealth.length;
+		assert ndays >= 3; // there have to be at least 2 return records
+		double[] rets = new double[ndays-1];
+		for (int i = 0; i < rets.length; i++) {
+			rets[i] = (wealth[i+1] - wealth[i]) / wealth[i]; 
+		}
+		DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics(rets);
+		return descriptiveStatistics.getMean() / descriptiveStatistics.getStandardDeviation();
+	}
+	
 }

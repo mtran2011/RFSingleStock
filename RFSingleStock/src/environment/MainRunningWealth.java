@@ -29,7 +29,7 @@ public class MainRunningWealth {
 	
 	private static Map<String, double[]> completeTrainingAndTesting() {
 		double originalPrice = 50, minprice = 0.1, maxprice = 100;
-		double kappa = Math.log(2) /5 , revertingLv = 50, sigma = 0.1;
+		double kappa = Math.log(2) / 5 , revertingLv = 50, sigma = 0.1;
 		int lotsize = 10, rounding = 1;
 		int maxholding = 10 * lotsize;
 		
@@ -63,7 +63,11 @@ public class MainRunningWealth {
 		return result;
 	}
 	
-	public static void main(String[] args) {
+	/*
+	 * Get result from training, testing and then write to csv file wealth PnL during testing
+	 */
+	
+	private static void runWealthPerformance() {
 		long startTime = System.currentTimeMillis();
 		
 		Map<String, double[]> wealthResult = completeTrainingAndTesting();
@@ -73,5 +77,40 @@ public class MainRunningWealth {
 		long timeLen = System.currentTimeMillis() - startTime;
 		System.out.print("Completed " + ntrain + " training and " + ntest + " testing steps in " 
 				+ timeLen / (1000*1) + " seconds");
+	}
+	
+	/*
+	 * Repeat training and testing for ntrials times, each trial giving a Sharpe ratio during testing phase
+	 * @return Map of trader's name to a column of Sharpe ratio during the trials' testing phase
+	 */
+	
+	private static void runSharpePerformance(int ntrials) {
+		long startTime = System.currentTimeMillis();
+		Map<String, double[]> sharpeRatios = new HashMap<String, double[]>();
+		for (int i = 0; i < ntrials; i++) {
+			Map<String, double[]> wealthResult = completeTrainingAndTesting();
+			if (i == 0) {
+				for (String name : wealthResult.keySet()) {
+					sharpeRatios.put(name, new double[ntrials]);
+				}
+			}
+			
+			for (Entry<String, double[]> entry : wealthResult.entrySet()) {
+				String name = entry.getKey();
+				double[] wealth = entry.getValue();
+				sharpeRatios.get(name)[i] = Helpers.calculateSharpe(wealth);
+			}
+		}
+		
+		File filename = new File("C:\\Users\\tranh\\Documents\\sharpe with " + ntrain + "train" + ntest + "test.csv");
+		Helpers.writeCsvTable(sharpeRatios, filename);
+		long timeLen = System.currentTimeMillis() - startTime;
+		System.out.print("Completed " + ntrials + " number of trials, each having " 
+				+ ntrain + " training and " + ntest + " testing steps in " 
+				+ timeLen / (1000*60) + " minutes");
+	}
+	
+	public static void main(String[] args) {
+		// TODO
 	}
 }
