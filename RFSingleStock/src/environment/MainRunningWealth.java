@@ -112,5 +112,7 @@ public class MainRunningWealth {
 	
 	public static void main(String[] args) {
 		// TODO
+		int ntrials = 60;
+		runSharpePerformance(ntrials);
 	}
 }
