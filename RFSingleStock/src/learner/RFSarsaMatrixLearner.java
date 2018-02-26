@@ -39,7 +39,6 @@ public class RFSarsaMatrixLearner extends SarsaMatrixLearner {
 				ytrain[row] = entry.getValue();
 				row++;
 			}
-			assert row == ntrain - 1;
 			// train the random forest
 			forest = new RandomForest(xtrain, ytrain, ntrees, Qmap.size(), nodeSize, mtry);
 		}

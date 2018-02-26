@@ -9,6 +9,7 @@ import java.util.Set;
 
 import common.AssetConfig;
 import learner.Learner;
+import learner.RFSarsaMatrixLearner;
 import learner.TabularQLearner;
 import learner.TabularSarsa;
 import stock.OULogStock;
@@ -20,6 +21,11 @@ public class MainRunningWealth {
 	private static final String rfSarsa = "RF Sarsa", tabQ = "Tabular Q", tabSarsa = "Tabular Sarsa";
 	private static final int ntrain = (int) 3e4; 
 	private static final int ntest = 5000;
+	
+	/*
+	 * Initialize variables and complete one training and one testing 
+	 * @return Map of trader's name to their wealths during testing phase
+	 */
 	
 	private static Map<String, double[]> completeTrainingAndTesting() {
 		double originalPrice = 50, minprice = 0.1, maxprice = 100;
@@ -40,10 +46,12 @@ public class MainRunningWealth {
 		int targetCount = ntrain; // when minimum epsilon of 0.001 kicks in
 		Learner tabularQLearner = new TabularQLearner(actions, initEpsilon, targetCount, learningRate, discount);
 		Learner tabularSarsaLearner = new TabularSarsa(actions, initEpsilon, targetCount, learningRate, discount);
+		Learner rfSarsaLearner = new RFSarsaMatrixLearner(actions, initEpsilon, targetCount, learningRate, discount);
 		
 		double utility = 1e-4;
 		SingleStockTrader tabularQTrader = new SingleStockTrader(tabQ, utility, tabularQLearner, exchange);
 		SingleStockTrader tabularSarsaTrader = new SingleStockTrader(tabSarsa, utility, tabularSarsaLearner, exchange);
+		SingleStockTrader rfSarsaTrader = new SingleStockTrader(rfSarsa, utility, rfSarsaLearner, exchange);
 		
 		SingleStockEnvi.runTrainingPhase(exchange, ntrain);
 		Map<SingleStockTrader, double[]> wealths = SingleStockEnvi.runTestingPhase(exchange, ntest);
