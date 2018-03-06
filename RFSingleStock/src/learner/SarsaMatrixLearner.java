@@ -14,7 +14,7 @@ public abstract class SarsaMatrixLearner extends MatrixLearner {
 		super(actions, initEpsilon, targetCount, learningRate, discount);
 	}
 
-	private void trainInternally(double reward, double nextQ) {
+	protected void trainInternally(double reward, double nextQ) {
 		double oldQ = getQ(lastStateAction);
 		double newQ = oldQ + learningRate * (reward + discount * nextQ - oldQ);
 		Qmap.put(lastStateAction, newQ);
