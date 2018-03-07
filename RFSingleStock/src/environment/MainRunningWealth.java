@@ -9,6 +9,7 @@ import java.util.Set;
 
 import common.AssetConfig;
 import learner.Learner;
+import learner.M5SarsaMatrixLearner;
 import learner.RFSarsaMatrixLearner;
 import learner.TabularQLearner;
 import learner.TabularSarsa;
@@ -18,7 +19,7 @@ import trader.SingleStockTrader;
 
 public class MainRunningWealth {
 	
-	private static final String rfSarsa = "RF Sarsa", tabQ = "Tabular Q", tabSarsa = "Tabular Sarsa";
+	private static final String rfSarsa = "RF Sarsa", tabQ = "Tabular Q", tabSarsa = "Tabular Sarsa", m5Sarsa = "M5 tree Sarsa";
 	private static final int ntrain = (int) 3e4; 
 	private static final int ntest = 5000;
 	
@@ -47,11 +48,13 @@ public class MainRunningWealth {
 		Learner tabularQLearner = new TabularQLearner(actions, initEpsilon, targetCount, learningRate, discount);
 		Learner tabularSarsaLearner = new TabularSarsa(actions, initEpsilon, targetCount, learningRate, discount);
 		Learner rfSarsaLearner = new RFSarsaMatrixLearner(actions, initEpsilon, targetCount, learningRate, discount);
+		Learner m5SarsaLearner = new M5SarsaMatrixLearner(actions, initEpsilon, targetCount, learningRate, discount);
 		
 		double utility = 1e-4;
 		SingleStockTrader tabularQTrader = new SingleStockTrader(tabQ, utility, tabularQLearner, exchange);
 		SingleStockTrader tabularSarsaTrader = new SingleStockTrader(tabSarsa, utility, tabularSarsaLearner, exchange);
 		SingleStockTrader rfSarsaTrader = new SingleStockTrader(rfSarsa, utility, rfSarsaLearner, exchange);
+		SingleStockTrader m5SarsaTrader = new SingleStockTrader(m5Sarsa, utility, m5SarsaLearner, exchange);
 		
 		SingleStockEnvi.runTrainingPhase(exchange, ntrain);
 		Map<SingleStockTrader, double[]> wealths = SingleStockEnvi.runTestingPhase(exchange, ntest);
@@ -112,7 +115,7 @@ public class MainRunningWealth {
 	
 	public static void main(String[] args) {
 		// TODO
-		int ntrials = 60;
+		int ntrials = 100;
 		runSharpePerformance(ntrials);
 	}
 }

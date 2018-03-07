@@ -28,11 +28,14 @@ public class M5SarsaMatrixLearner extends SarsaMatrixLearner {
 		Attribute actionColumn = new Attribute("action");
 		Attribute holdingColumn = new Attribute("holding");
 		Attribute priceColumn = new Attribute("price");
+		Attribute qValue = new Attribute("Q value");
 		ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 		attributes.add(0, actionColumn);
 		attributes.add(1, holdingColumn);
 		attributes.add(2, priceColumn);
+		attributes.add(3, qValue);
 		trainingData = new Instances("trainingDataSet", attributes, trainingLength);
+		trainingData.setClassIndex(trainingData.numAttributes()-1);
 	}
 	
 	@Override
@@ -42,9 +45,17 @@ public class M5SarsaMatrixLearner extends SarsaMatrixLearner {
 		// store (lastStateAction, newQ) into trainingData instead of Qmap
 		assert trainingData.size() < trainingLength;
 		double[] saVals = lastStateAction.toArray();
-		Instance instance = new DenseInstance(1.0, saVals);
-		instance.setClassValue(newQ);
+		double[] xyRow = new double[saVals.length + 1];
+		for (int i = 0; i < xyRow.length; i++) {
+			if (i < saVals.length) {
+				xyRow[i] = saVals[i];
+			}else {
+				xyRow[i] = newQ;
+			}
+		}
+		Instance instance = new DenseInstance(1.0, xyRow);
 		trainingData.add(instance);
+		instance.setDataset(trainingData);
 		
 		// train a new tree and flush training data if needed
 		if (trainingData.size() == trainingLength) {

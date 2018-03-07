@@ -13,5 +13,8 @@
 	<classpathentry kind="lib" path="C:/Javalib/mockito/mockito-all-1.10.19.jar"/>
 	<classpathentry kind="lib" path="C:/Javalib/commons-lang3-3.7/commons-lang3-3.7.jar"/>
 	<classpathentry kind="lib" path="C:/Javalib/weka-3-8-2/weka.jar"/>
+	<classpathentry kind="lib" path="C:/Javalib/weka-3-8-2/arpack_combined.jar"/>
+	<classpathentry kind="lib" path="C:/Javalib/weka-3-8-2/core.jar"/>
+	<classpathentry kind="lib" path="C:/Javalib/weka-3-8-2/mtj.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
