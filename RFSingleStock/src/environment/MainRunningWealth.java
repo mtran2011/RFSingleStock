@@ -11,6 +11,7 @@ import common.AssetConfig;
 import learner.Learner;
 import learner.M5SarsaMatrixLearner;
 import learner.RFSarsaMatrixLearner;
+import learner.RandomizedTreeSarsaMatrixLearner;
 import learner.TabularQLearner;
 import learner.TabularSarsa;
 import stock.OULogStock;
@@ -19,8 +20,9 @@ import trader.SingleStockTrader;
 
 public class MainRunningWealth {
 	
-	private static final String rfSarsa = "RF Sarsa", tabQ = "Tabular Q", tabSarsa = "Tabular Sarsa", m5Sarsa = "M5 tree Sarsa";
-	private static final int ntrain = (int) 3e4; 
+	private static final String rfSarsa = "RF Sarsa", tabQ = "Tabular Q", tabSarsa = "Tabular Sarsa", m5Sarsa = "M5 tree Sarsa"; 
+	private static final String randTreeSarsa = "Randomized Tree Sarsa";
+	private static final int ntrain = (int) 5e5; 
 	private static final int ntest = 5000;
 	
 	/*
@@ -47,14 +49,16 @@ public class MainRunningWealth {
 		int targetCount = ntrain; // when minimum epsilon of 0.001 kicks in
 		Learner tabularQLearner = new TabularQLearner(actions, initEpsilon, targetCount, learningRate, discount);
 		Learner tabularSarsaLearner = new TabularSarsa(actions, initEpsilon, targetCount, learningRate, discount);
-		Learner rfSarsaLearner = new RFSarsaMatrixLearner(actions, initEpsilon, targetCount, learningRate, discount);
+//		Learner rfSarsaLearner = new RFSarsaMatrixLearner(actions, initEpsilon, targetCount, learningRate, discount);
 		Learner m5SarsaLearner = new M5SarsaMatrixLearner(actions, initEpsilon, targetCount, learningRate, discount);
+		Learner randTreeSarsaLearner = new RandomizedTreeSarsaMatrixLearner(actions, initEpsilon, targetCount, learningRate, discount);
 		
 		double utility = 1e-4;
 		SingleStockTrader tabularQTrader = new SingleStockTrader(tabQ, utility, tabularQLearner, exchange);
 		SingleStockTrader tabularSarsaTrader = new SingleStockTrader(tabSarsa, utility, tabularSarsaLearner, exchange);
-		SingleStockTrader rfSarsaTrader = new SingleStockTrader(rfSarsa, utility, rfSarsaLearner, exchange);
+//		SingleStockTrader rfSarsaTrader = new SingleStockTrader(rfSarsa, utility, rfSarsaLearner, exchange);
 		SingleStockTrader m5SarsaTrader = new SingleStockTrader(m5Sarsa, utility, m5SarsaLearner, exchange);
+		SingleStockTrader randTreeSarsaTrader = new SingleStockTrader(randTreeSarsa, utility, randTreeSarsaLearner, exchange);
 		
 		SingleStockEnvi.runTrainingPhase(exchange, ntrain);
 		Map<SingleStockTrader, double[]> wealths = SingleStockEnvi.runTestingPhase(exchange, ntest);
@@ -105,7 +109,7 @@ public class MainRunningWealth {
 			}
 		}
 		
-		File filename = new File("C:\\Users\\tranh\\Documents\\sharpe with " + ntrain + "train" + ntest + "test.csv");
+		File filename = new File("C:\\Users\\tranh\\Documents\\sharpe_with_" + ntrain + "train" + ntest + "test.csv");
 		Helpers.writeCsvTable(sharpeRatios, filename);
 		long timeLen = System.currentTimeMillis() - startTime;
 		System.out.print("Completed " + ntrials + " number of trials, each having " 
@@ -114,8 +118,7 @@ public class MainRunningWealth {
 	}
 	
 	public static void main(String[] args) {
-		// TODO
-		int ntrials = 100;
+		int ntrials = 30;
 		runSharpePerformance(ntrials);
 	}
 }

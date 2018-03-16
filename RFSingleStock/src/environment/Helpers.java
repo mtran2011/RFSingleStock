@@ -66,7 +66,7 @@ public class Helpers {
 			rets[i] = (wealth[i+1] - wealth[i]) / wealth[i]; 
 		}
 		DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics(rets);
-		return descriptiveStatistics.getMean() / descriptiveStatistics.getStandardDeviation();
+		return descriptiveStatistics.getMean() * Math.sqrt(252) / descriptiveStatistics.getStandardDeviation();
 	}
 	
 }

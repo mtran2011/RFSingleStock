@@ -13,7 +13,7 @@ import weka.core.Instances;
 
 public class M5SarsaMatrixLearner extends SarsaMatrixLearner {
 	
-	private final int trainingLength = 1000; // number of training instances used to build a m5 tree
+	private final int trainingLength = (int) 1e5; // number of training instances used to build a m5 tree
 	private Set<M5P> m5trees; // set of trained m5 trees built so far
 	private Instances trainingData; // collected data up to trainingLength steps
 	

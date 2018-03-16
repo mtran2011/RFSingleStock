@@ -1,21 +1,21 @@
 package learner;
 
-import java.util.Map.Entry;
+import java.util.List;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import common.StateActionPair;
 import smile.regression.RandomForest;
 
-public class RFSarsaMatrixLearner extends SarsaMatrixLearner {
-
-	private RandomForest forest;
-	private final int ntrees = 6;
+public class RandomizedTreeSarsaMatrixLearner extends SarsaMatrixLearner {
+	
+	private List<RandomForest> trees;
 	private final int nodeSize = 5;
 	private final int mtry = 2; // number of random features selected for each tree
 	private final int stepMultiple = (int) 1e5;
-	
-	public RFSarsaMatrixLearner(Set<Integer> actions, double initEpsilon, int targetCount, double learningRate,
-			double discount) {
+
+	public RandomizedTreeSarsaMatrixLearner(Set<Integer> actions, double initEpsilon, int targetCount,
+			double learningRate, double discount) {
 		super(actions, initEpsilon, targetCount, learningRate, discount);
 	}
 
@@ -39,12 +39,19 @@ public class RFSarsaMatrixLearner extends SarsaMatrixLearner {
 				ytrain[row] = entry.getValue();
 				row++;
 			}
-			// train the random forest
-			forest = null;
-			forest = new RandomForest(xtrain, ytrain, ntrees, Qmap.size(), nodeSize, mtry);
+			// train the random forest of 1 tree, this is a randomized tree
+			// add the tree to list of trees
+			RandomForest forest = new RandomForest(xtrain, ytrain, 1, Qmap.size(), nodeSize, mtry);
+			trees.add(forest);
 		}
-		// use the forest to predict 
+		// use the list of trees to predict 
 		double[] x = sa.toArray();
-		return forest.predict(x);
+		double prediction = 0;
+		for (RandomForest tree : trees) {
+			prediction += tree.predict(x);
+		}
+		return prediction / trees.size();
+		
 	}
+
 }
